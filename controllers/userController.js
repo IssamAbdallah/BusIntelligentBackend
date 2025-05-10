@@ -23,6 +23,8 @@ const User = require('../models/User');
  *                 type: string
  *               email:
  *                 type: string
+ *               cinNumber:
+ *                 type: number
  *               password:
  *                 type: string
  *               role:
@@ -42,17 +44,18 @@ const User = require('../models/User');
  *         description: Server error
  */
 const createUser = async (req, res) => {
-    const { username, email, password, role,  myadmin, agencies } = req.body;
+    const { username, email, cinNumber, password, role,  myadmin, agencies } = req.body;
     try {
         const userExists = await User.findOne({ email });
         if (userExists) return res.status(400).json({ message: 'Utilisateur déjà existant' });
-        if (req.user.role == "admin" && role != "consultant") return res.status(400).json({ message: 'seul le superadmin peut créer un compte administrateur' });
-        if (req.user.role == "consultant") return res.status(400).json({ message: 'seul les admin et superadmin peut créer un compte administrateur' });
+        if (req.user.role == "admin" && role != "parent") return res.status(400).json({ message: 'seul le superadmin peut créer un compte administrateur' });
+        if (req.user.role == "parent") return res.status(400).json({ message: 'seul les admin et superadmin peut créer un compte administrateur' });
 
         const hashedPassword = await bcrypt.hash(password, 12);
         const data = req.user.role == "admin" ? new User({
             username,
             email,
+            cinNumber,
             role,
             password: hashedPassword,
             myadmin: req.user.email,
@@ -62,6 +65,7 @@ const createUser = async (req, res) => {
         }) : new User({
             username,
             email,
+            cinNumber,
             role,
             password: hashedPassword,
             myadmin,
@@ -113,7 +117,7 @@ const getUsers = async (req, res) => {
             })
                 .populate('agencies')
                 .select('-password');
-        } else if (req.user.role === 'consultant') {
+        } else if (req.user.role === 'parent') {
             users = await User.find({ email: req.user.email }).populate('agencies').select('-password');
         } else {
             // Forbidden access for other roles
@@ -165,7 +169,7 @@ const getUserById = async (req, res) => {
             })
                 .populate('agencies')
                 .select('-password');
-        } else if (req.user.role === 'consultant') {
+        } else if (req.user.role === 'parent') {
             user = await User.findOne({
                 _id: id,
                 $or: [

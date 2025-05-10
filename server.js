@@ -62,9 +62,8 @@ app.use('/api/shapes', require('./routes/shapeRoutes.js'));
 app.use('/api/userpermission', require('./routes/permissionRoutes.js'));
 app.use('/api/vehicle-assignments', require('./routes/VehicleAssignementRoutes.js'));
 
-
-
 app.use('/api/vehicles', require('./routes/vehicleRoutes'));
+app.use('/api/drivers', require('./routes/driverRoutes'));
 
 app.get('/', (req, res) => {
   res.send('🚀 API en cours d\'exécution...');
