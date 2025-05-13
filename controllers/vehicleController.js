@@ -79,7 +79,7 @@ const getVehicleById = async (req, res) => {
  *             required:
  *               - uniqueId
  *               - name
- *               - driverId
+ *               - driver
  *               - temperature
  *               - humidity
  *               - pression
@@ -91,7 +91,7 @@ const getVehicleById = async (req, res) => {
  *                 type: string
  *               name:
  *                 type: string
- *               driverId:
+ *               driver:
  *                 type: string
  *               temperature:
  *                 type: string

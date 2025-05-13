@@ -28,6 +28,6 @@ const routeSchema = new mongoose.Schema({
     ],
     createdAt: { type: Date, default: Date.now }
 });
-routeSchema.index({ route_id: 1 }); // Index for efficient lookup
+routeSchema.index({ route_id: 1 });
 
 module.exports = mongoose.model('Route', routeSchema);

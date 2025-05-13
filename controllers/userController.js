@@ -23,8 +23,6 @@ const User = require('../models/User');
  *                 type: string
  *               email:
  *                 type: string
- *               cinNumber:
- *                 type: number
  *               password:
  *                 type: string
  *               role:
@@ -44,7 +42,7 @@ const User = require('../models/User');
  *         description: Server error
  */
 const createUser = async (req, res) => {
-    const { username, email, cinNumber, password, role,  myadmin, agencies } = req.body;
+    const { username, email, password, role,  myadmin, agencies } = req.body;
     try {
         const userExists = await User.findOne({ email });
         if (userExists) return res.status(400).json({ message: 'Utilisateur déjà existant' });
@@ -55,7 +53,6 @@ const createUser = async (req, res) => {
         const data = req.user.role == "admin" ? new User({
             username,
             email,
-            cinNumber,
             role,
             password: hashedPassword,
             myadmin: req.user.email,
@@ -65,7 +62,6 @@ const createUser = async (req, res) => {
         }) : new User({
             username,
             email,
-            cinNumber,
             role,
             password: hashedPassword,
             myadmin,

@@ -12,8 +12,8 @@ const router = express.Router();
 
 router.get('/', protect, getAllDrivers); // Example: Add middleware
 router.get('/:id', protect, getDriverById);
-router.post('/', protect, isAdmin, createDriver); // Example: Restrict to admins
-router.put('/:id', protect, isAdmin, updateDriver);
-router.delete('/:id', protect, isAdmin, deleteDriver);
+router.post('/', protect, isSuperOrAdmin, createDriver); // Example: Restrict to admins
+router.put('/:id', protect, isSuperOrAdmin, updateDriver);
+router.delete('/:id', protect, isSuperOrAdmin, deleteDriver);
 
 module.exports = router;

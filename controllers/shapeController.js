@@ -284,4 +284,16 @@ const deleteShape = async (req, res) => {
   }
 };
 
-module.exports = { createShape, getShapes, getShapesSummary, getShapeById, updateShape, deleteShape };
+const getShapeByShapeId = async (req, res) => {
+  try {
+    const shape = await Shape.findOne({ shape_id: req.params.shapeId });
+    if (!shape) return res.status(404).json({ message: 'Shape not found' });
+    res.status(200).json(shape);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+
+module.exports = { createShape, getShapes, getShapesSummary, getShapeById, updateShape, deleteShape, getShapeByShapeId };

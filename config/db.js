@@ -16,8 +16,8 @@ const connectDB = async () => {
    .then(() => {
      console.log("Connected to MongoDB");
    
-     // Listen on port 5000 for HTTP server
-    const PORT = process.env.PORT || 5000;
+     // Listen on port 80 for HTTP server
+    const PORT = process.env.PORT || 80;
     const server = app.listen(PORT, () => {
       console.log(`Server started at port ${PORT}`);
      });
