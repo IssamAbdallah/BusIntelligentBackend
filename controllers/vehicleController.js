@@ -80,10 +80,6 @@ const getVehicleById = async (req, res) => {
  *               - uniqueId
  *               - name
  *               - driver
- *               - temperature
- *               - humidity
- *               - pression
- *               - flame
  *               - latitude
  *               - longitude
  *             properties:
@@ -93,14 +89,6 @@ const getVehicleById = async (req, res) => {
  *                 type: string
  *               driver:
  *                 type: string
- *               temperature:
- *                 type: string
- *               humidity:
- *                 type: string
- *               pression:
- *                 type: string
- *               flame:
- *                 type: boolean
  *               latitude:
  *                 type: string 
  *               longitude:
@@ -113,7 +101,7 @@ const getVehicleById = async (req, res) => {
  */
 
 const createVehicle = async (req, res) => {
-    const { uniqueId, name, driver, temperature, humidity, pression, flame, latitude, longitude} = req.body;
+    const { uniqueId, name, driver, latitude, longitude} = req.body;
   
     // Only allow `uniqueId` and `name` fields
     if (!uniqueId || !name) {
@@ -121,7 +109,7 @@ const createVehicle = async (req, res) => {
     }
   
     try {
-      const newVehicle = new Vehicle({ uniqueId, name, driver, temperature, humidity, pression, flame, latitude, longitude});
+      const newVehicle = new Vehicle({ uniqueId, name, driver, latitude, longitude});
       const savedVehicle = await newVehicle.save();
       res.status(201).json(savedVehicle);
     } catch (error) {

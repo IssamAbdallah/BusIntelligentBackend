@@ -11,6 +11,12 @@ const userSchema = new mongoose.Schema({
   email: { 
     type: String, required: true, 
     unique: true },
+
+  cinNumber: { 
+    type: String, required: true, 
+    unique: true },
+  phoneNumber: { 
+    type: String, required: true },
   password: { 
     type: String, 
     required: true },
@@ -25,6 +31,13 @@ const userSchema = new mongoose.Schema({
       ref: 'Agency'
     }
   ],
+
+  students: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Student'
+    }
+  ], // Liste des élèves associés au parent
 
   createdAt: { type: Date, default: Date.now }
 });

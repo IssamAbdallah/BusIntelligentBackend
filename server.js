@@ -64,6 +64,7 @@ app.use('/api/vehicle-assignments', require('./routes/VehicleAssignementRoutes.j
 
 app.use('/api/vehicles', require('./routes/vehicleRoutes'));
 app.use('/api/drivers', require('./routes/driverRoutes'));
+app.use('/api/students', require('./routes/studentRoutes'));
 
 app.get('/', (req, res) => {
   res.send('🚀 API en cours d\'exécution...');
