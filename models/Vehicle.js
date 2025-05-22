@@ -2,8 +2,8 @@ const mongoose = require("mongoose");
 
 const vehicleSchema = new mongoose.Schema({
     id: { type: String }, 
-    uniqueId: { type: String, required: true, unique: true }, // ✅ required & unique
-    name: { type: String, required: true },                   // ✅ required
+    uniqueId: { type: String, required: true, unique: true },
+    name: { type: String, required: true },
     category: { type: String }, 
     latitude: { type: Number, required: true }, 
     longitude: { type: Number, required: true },  
@@ -11,7 +11,19 @@ const vehicleSchema = new mongoose.Schema({
     pression: { type: Number }, 
     humidity: { type: Number }, 
     flame: { type: Boolean },
-    driver: { type: String, required: true },
+    drivers: {
+        type: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Driver"
+        }],
+        validate: {
+            validator: function(array) {
+                return array.length <= 2 && array.length > 0;
+            },
+            message: "A vehicle must have 1 or 2 drivers."
+        },
+        required: true
+    },
     positionId: { type: String }, 
     updatedAt: { type: Date, default: Date.now }, 
     assignedRoute: { type: mongoose.Schema.Types.ObjectId, ref: "Route" }, 

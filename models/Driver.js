@@ -13,6 +13,11 @@ const driverSchema = new mongoose.Schema({
     required: true,
   },
   createdAt: { type: Date, default: Date.now },
+  assignedVehicle: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Vehicle",
+    default: null
+  }
 });
 
 module.exports = mongoose.model('Driver', driverSchema);

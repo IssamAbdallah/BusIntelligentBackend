@@ -1,5 +1,5 @@
-const express = require('express');
 const Driver = require('../models/Driver');
+const Vehicle = require('../models/Vehicle');
 
 /**
  * @swagger
@@ -21,7 +21,7 @@ const Driver = require('../models/Driver');
  */
 const getAllDrivers = async (req, res) => {
   try {
-    const drivers = await Driver.find();
+    const drivers = await Driver.find().populate('assignedVehicle');
     res.status(200).json(drivers);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -55,7 +55,7 @@ const getAllDrivers = async (req, res) => {
  */
 const getDriverById = async (req, res) => {
   try {
-    const driver = await Driver.findById(req.params.id);
+    const driver = await Driver.findById(req.params.id).populate('assignedVehicle');
     if (!driver) return res.status(404).json({ message: "Driver not found" });
     res.status(200).json(driver);
   } catch (error) {
@@ -184,15 +184,21 @@ const updateDriver = async (req, res) => {
  */
 const deleteDriver = async (req, res) => {
   try {
-    const deleted = await Driver.findByIdAndDelete(req.params.id);
-    if (!deleted) return res.status(404).json({ message: "Driver not found" });
+    const driver = await Driver.findById(req.params.id);
+    if (!driver) return res.status(404).json({ message: "Driver not found" });
+
+    // Remove the driver from its assigned vehicle
+    if (driver.assignedVehicle) {
+      await Vehicle.findByIdAndUpdate(driver.assignedVehicle, { $pull: { drivers: driver._id } });
+    }
+
+    await Driver.findByIdAndDelete(req.params.id);
     res.status(200).json({ message: "Driver deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-// Export the individual functions
 module.exports = {
   getAllDrivers,
   getDriverById,
